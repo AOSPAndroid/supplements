@@ -18,6 +18,18 @@
             --text: #f1f5f9;
             --text-dim: #64748b;
             --border: #1e1e2e;
+            --warning: #f59e0b;
+            --morning: #fbbf24;
+            --afternoon: #f97316;
+            --evening: #8b5cf6;
+        }
+
+        .light-mode {
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #0f172a;
+            --text-dim: #64748b;
+            --border: #e2e8f0;
         }
 
         * {
@@ -36,6 +48,13 @@
             background-image: 
                 radial-gradient(ellipse at 20% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
                 radial-gradient(ellipse at 80% 100%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
+            transition: background 0.3s ease;
+        }
+
+        .light-mode body {
+            background-image: 
+                radial-gradient(ellipse at 20% 0%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 100%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
         }
 
         .container {
@@ -46,8 +65,10 @@
         }
 
         header {
-            text-align: center;
-            margin-bottom: 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
             animation: fadeInDown 0.6s ease-out;
         }
 
@@ -56,7 +77,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        h1 {
+        .header-left h1 {
             font-size: 28px;
             font-weight: 600;
             letter-spacing: -0.5px;
@@ -66,11 +87,74 @@
             background-clip: text;
         }
 
-        .date {
+        .header-left .date {
             font-size: 13px;
             color: var(--text-dim);
-            margin-top: 6px;
-            font-weight: 400;
+            margin-top: 4px;
+        }
+
+        .theme-toggle {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent);
+        }
+
+        .theme-toggle svg {
+            width: 20px;
+            height: 20px;
+            stroke: var(--text);
+            fill: none;
+        }
+
+        /* Time of Day Tabs */
+        .time-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            animation: fadeInUp 0.6s ease-out 0.1s both;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .time-tab {
+            flex: 1;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .time-tab.active {
+            border-color: var(--accent);
+            background: linear-gradient(135deg, var(--card) 0%, rgba(99, 102, 241, 0.1) 100%);
+        }
+
+        .time-tab .icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .time-tab .label {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-dim);
+        }
+
+        .time-tab.active .label {
+            color: var(--accent);
         }
 
         .streak-banner {
@@ -82,12 +166,11 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            animation: fadeInUp 0.6s ease-out 0.1s both;
+            animation: fadeInUp 0.6s ease-out 0.15s both;
         }
 
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .light-mode .streak-banner {
+            background: linear-gradient(135deg, var(--card) 0%, #f1f5f9 100%);
         }
 
         .streak-info h2 {
@@ -148,6 +231,63 @@
             font-weight: 600;
         }
 
+        /* Weekly Stats */
+        .weekly-stats {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 20px;
+            animation: fadeInUp 0.6s ease-out 0.2s both;
+        }
+
+        .weekly-stats h3 {
+            font-size: 13px;
+            color: var(--text-dim);
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .week-days {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .week-day {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .week-day .day {
+            font-size: 11px;
+            color: var(--text-dim);
+        }
+
+        .week-day .dot {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-dim);
+        }
+
+        .week-day .dot.complete {
+            background: var(--success);
+            color: white;
+        }
+
+        .week-day .dot.partial {
+            background: var(--warning);
+            color: white;
+        }
+
         .supplements {
             display: flex;
             flex-direction: column;
@@ -169,11 +309,11 @@
             overflow: hidden;
         }
 
-        .supplement-card:nth-child(1) { animation-delay: 0.15s; }
-        .supplement-card:nth-child(2) { animation-delay: 0.2s; }
-        .supplement-card:nth-child(3) { animation-delay: 0.25s; }
-        .supplement-card:nth-child(4) { animation-delay: 0.3s; }
-        .supplement-card:nth-child(5) { animation-delay: 0.35s; }
+        .supplement-card:nth-child(1) { animation-delay: 0.25s; }
+        .supplement-card:nth-child(2) { animation-delay: 0.3s; }
+        .supplement-card:nth-child(3) { animation-delay: 0.35s; }
+        .supplement-card:nth-child(4) { animation-delay: 0.4s; }
+        .supplement-card:nth-child(5) { animation-delay: 0.45s; }
 
         .supplement-card::before {
             content: '';
@@ -291,7 +431,8 @@
             transition: all 0.3s ease;
             margin-top: 16px;
             box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
-            animation: fadeInUp 0.6s ease-out 0.4s both;
+            animation: fadeInUp 0.6s ease-out 0.5s both;
+            font-family: inherit;
         }
 
         .add-btn:hover {
@@ -353,7 +494,7 @@
             margin-bottom: 20px;
         }
 
-        .modal input {
+        .modal input, .modal select {
             width: 100%;
             background: var(--bg);
             border: 1px solid var(--border);
@@ -366,7 +507,7 @@
             transition: border-color 0.3s ease;
         }
 
-        .modal input:focus {
+        .modal input:focus, .modal select:focus {
             outline: none;
             border-color: var(--accent);
         }
@@ -441,18 +582,52 @@
             margin-bottom: 16px;
             opacity: 0.5;
         }
+
+        .empty-state p {
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Supplements</h1>
-            <div class="date" id="currentDate"></div>
+            <div class="header-left">
+                <h1>Supplements</h1>
+                <div class="date" id="currentDate"></div>
+            </div>
+            <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+                <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+            </button>
         </header>
+
+        <div class="time-tabs">
+            <div class="time-tab active" data-time="morning">
+                <div class="icon">🌅</div>
+                <div class="label">Morning</div>
+            </div>
+            <div class="time-tab" data-time="afternoon">
+                <div class="icon">☀️</div>
+                <div class="label">Afternoon</div>
+            </div>
+            <div class="time-tab" data-time="evening">
+                <div class="icon">🌙</div>
+                <div class="label">Evening</div>
+            </div>
+        </div>
 
         <div class="streak-banner">
             <div class="streak-info">
-                <h2>Current Streak</h2>
+                <h2>Today's Streak</h2>
                 <div class="streak-count" id="streakCount">0</div>
                 <div class="streak-label">days</div>
             </div>
@@ -462,6 +637,13 @@
                     <circle class="progress" id="progressRing" cx="32" cy="32" r="28"></circle>
                 </svg>
                 <div class="progress-text" id="progressText">0%</div>
+            </div>
+        </div>
+
+        <div class="weekly-stats">
+            <h3>This Week</h3>
+            <div class="week-days" id="weekDays">
+                <!-- Generated by JS -->
             </div>
         </div>
 
@@ -484,6 +666,11 @@
             <h3>Add Supplement</h3>
             <input type="text" id="supplementName" placeholder="Name (e.g., Vitamin D3)">
             <input type="text" id="supplementDosage" placeholder="Dosage (e.g., 5000 IU)">
+            <select id="supplementTime">
+                <option value="morning">🌅 Morning</option>
+                <option value="afternoon">☀️ Afternoon</option>
+                <option value="evening">🌙 Evening</option>
+            </select>
             <div class="modal-buttons">
                 <button class="modal-btn cancel" id="cancelBtn">Cancel</button>
                 <button class="modal-btn save" id="saveBtn">Save</button>
@@ -495,77 +682,79 @@
         // App State
         const state = {
             supplements: [],
-            completedToday: [],
+            completed: {}, // { "morning-2026-02-19": [id1, id2] }
+            currentTime: 'morning',
             currentStreak: 0,
-            lastCompletedDate: null
+            theme: 'dark'
         };
+
+        const timeOfDay = ['morning', 'afternoon', 'evening'];
 
         // Load from localStorage
         function loadState() {
-            const today = new Date().toDateString();
-            
             const savedSupplements = localStorage.getItem('supplements');
-            const savedCompleted = localStorage.getItem('completedToday');
+            const savedCompleted = localStorage.getItem('completed');
             const savedStreak = localStorage.getItem('streak');
-            const savedLastDate = localStorage.getItem('lastCompletedDate');
+            const savedTheme = localStorage.getItem('theme');
 
             if (savedSupplements) state.supplements = JSON.parse(savedSupplements);
-            if (savedCompleted) {
-                const completedData = JSON.parse(savedCompleted);
-                // Reset if it's a new day
-                if (completedData.date !== today) {
-                    // Check if yesterday was completed (for streak)
-                    const yesterday = new Date();
-                    yesterday.setDate(yesterday.getDate() - 1);
-                    
-                    if (completedData.date === yesterday.toDateString() && completedData.items.length > 0) {
-                        state.currentStreak = savedStreak ? parseInt(savedStreak) : 0;
-                    } else if (completedData.date !== today) {
-                        // Reset streak if more than 1 day gap
-                        state.currentStreak = 0;
-                    }
-                    state.completedToday = [];
-                } else {
-                    state.completedToday = completedData.items;
-                }
-            }
-            if (savedStreak && savedLastDate) {
-                const lastDate = new Date(savedLastDate);
-                const todayDate = new Date();
-                const diffDays = Math.floor((todayDate - lastDate) / (1000 * 60 * 60 * 24));
-                
-                if (diffDays <= 1) {
-                    state.currentStreak = parseInt(savedStreak);
-                }
-            }
-            
+            if (savedCompleted) state.completed = JSON.parse(savedCompleted);
+            if (savedStreak) state.currentStreak = parseInt(savedStreak);
+            if (savedTheme) state.theme = savedTheme;
+
             // Set default supplements if empty
             if (state.supplements.length === 0) {
                 state.supplements = [
-                    { id: 1, name: 'Vitamin D3', dosage: '5000 IU', streak: 0 },
-                    { id: 2, name: 'Omega-3', dosage: '2000mg', streak: 0 },
-                    { id: 3, name: 'Magnesium', dosage: '400mg', streak: 0 },
-                    { id: 4, name: 'Zinc', dosage: '30mg', streak: 0 }
+                    { id: 1, name: 'Vitamin D3', dosage: '5000 IU', time: 'morning' },
+                    { id: 2, name: 'Omega-3', dosage: '2000mg', time: 'morning' },
+                    { id: 3, name: 'Magnesium', dosage: '400mg', time: 'evening' },
+                    { id: 4, name: 'Zinc', dosage: '30mg', time: 'evening' }
                 ];
                 saveState();
+            }
+
+            // Apply theme
+            if (state.theme === 'light') {
+                document.body.classList.add('light-mode');
             }
         }
 
         // Save to localStorage
         function saveState() {
             localStorage.setItem('supplements', JSON.stringify(state.supplements));
-            localStorage.setItem('completedToday', JSON.stringify({
-                date: new Date().toDateString(),
-                items: state.completedToday
-            }));
+            localStorage.setItem('completed', JSON.stringify(state.completed));
             localStorage.setItem('streak', state.currentStreak.toString());
-            localStorage.setItem('lastCompletedDate', new Date().toDateString());
+            localStorage.setItem('theme', state.theme);
+        }
+
+        // Get today's key
+        function getTodayKey() {
+            return new Date().toISOString().split('T')[0];
+        }
+
+        // Get completed key
+        function getCompletedKey(time) {
+            return `${time}-${getTodayKey()}`;
+        }
+
+        // Get week days
+        function getWeekDays() {
+            const days = [];
+            const today = new Date();
+            for (let i = 6; i >= 0; i--) {
+                const d = new Date(today);
+                d.setDate(d.getDate() - i);
+                days.push({
+                    day: d.toLocaleDateString('en-US', { weekday: 'short' }).charAt(0),
+                    date: d.toISOString().split('T')[0]
+                });
+            }
+            return days;
         }
 
         // Render
         function render() {
             const list = document.getElementById('supplementsList');
-            const today = new Date().toDateString();
             
             // Update date
             document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', {
@@ -574,20 +763,24 @@
                 day: 'numeric'
             });
 
-            if (state.supplements.length === 0) {
+            // Filter supplements by time of day
+            const filtered = state.supplements.filter(s => s.time === state.currentTime);
+            const completedToday = state.completed[getCompletedKey(state.currentTime)] || [];
+
+            if (filtered.length === 0) {
                 list.innerHTML = `
                     <div class="empty-state">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
                         </svg>
-                        <p>No supplements added yet</p>
+                        <p>No supplements for ${state.currentTime}</p>
                     </div>
                 `;
                 return;
             }
 
-            list.innerHTML = state.supplements.map(supp => {
-                const isCompleted = state.completedToday.includes(supp.id);
+            list.innerHTML = filtered.map(supp => {
+                const isCompleted = completedToday.includes(supp.id);
                 return `
                     <div class="supplement-card ${isCompleted ? 'completed' : ''}" data-id="${supp.id}">
                         <div class="supplement-info">
@@ -611,19 +804,22 @@
                 `;
             }).join('');
 
-            // Update streak banner
-            document.getElementById('streakCount').textContent = state.currentStreak;
-            
-            // Update progress ring
-            const total = state.supplements.length;
-            const completed = state.completedToday.length;
+            // Update streak banner for current time period
+            const periodSupps = state.supplements.filter(s => s.time === state.currentTime);
+            const completed = completedToday.length;
+            const total = periodSupps.length;
             const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+            
+            document.getElementById('streakCount').textContent = state.currentStreak;
             
             const circumference = 2 * Math.PI * 28;
             const offset = circumference - (percentage / 100) * circumference;
             
             document.getElementById('progressRing').style.strokeDashoffset = offset;
             document.getElementById('progressText').textContent = `${percentage}%`;
+
+            // Update weekly stats
+            renderWeekStats();
 
             // Add click handlers
             document.querySelectorAll('.supplement-card').forEach(card => {
@@ -635,24 +831,55 @@
             });
         }
 
+        function renderWeekStats() {
+            const weekDays = getWeekDays();
+            const container = document.getElementById('weekDays');
+            
+            container.innerHTML = weekDays.map(day => {
+                const dayKey = `${state.currentTime}-${day.date}`;
+                const dayCompleted = state.completed[dayKey] || [];
+                const daySupps = state.supplements.filter(s => s.time === state.currentTime);
+                const completed = dayCompleted.length;
+                const total = daySupps.length;
+                
+                let dotClass = 'dot';
+                if (completed === total && total > 0) dotClass += ' complete';
+                else if (completed > 0) dotClass += ' partial';
+                
+                return `
+                    <div class="week-day">
+                        <div class="${dotClass}">${completed}/${total}</div>
+                        <div class="day">${day.day}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
         // Toggle supplement completion
         function toggleSupplement(id) {
             const suppId = parseInt(id);
-            const index = state.completedToday.indexOf(suppId);
+            const key = getCompletedKey(state.currentTime);
+            
+            if (!state.completed[key]) {
+                state.completed[key] = [];
+            }
+            
+            const index = state.completed[key].indexOf(suppId);
             const supplement = state.supplements.find(s => s.id === suppId);
 
             if (index === -1) {
                 // Mark as completed
-                state.completedToday.push(suppId);
+                state.completed[key].push(suppId);
                 supplement.streak = (supplement.streak || 0) + 1;
                 
                 // Check if all completed for streak
-                if (state.completedToday.length === state.supplements.length) {
+                const periodSupps = state.supplements.filter(s => s.time === state.currentTime);
+                if (state.completed[key].length === periodSupps.length) {
                     state.currentStreak++;
                 }
             } else {
                 // Unmark
-                state.completedToday.splice(index, 1);
+                state.completed[key].splice(index, 1);
                 supplement.streak = Math.max(0, (supplement.streak || 1) - 1);
             }
 
@@ -661,12 +888,13 @@
         }
 
         // Add supplement
-        function addSupplement(name, dosage) {
+        function addSupplement(name, dosage, time) {
             const newId = Math.max(0, ...state.supplements.map(s => s.id)) + 1;
             state.supplements.push({
                 id: newId,
                 name: name,
                 dosage: dosage,
+                time: time,
                 streak: 0
             });
             saveState();
@@ -677,11 +905,31 @@
         function deleteSupplement(id) {
             if (confirm('Delete this supplement?')) {
                 state.supplements = state.supplements.filter(s => s.id !== parseInt(id));
-                state.completedToday = state.completedToday.filter(c => c !== parseInt(id));
+                // Remove from completed
+                Object.keys(state.completed).forEach(key => {
+                    state.completed[key] = state.completed[key].filter(c => c !== parseInt(id));
+                });
                 saveState();
                 render();
             }
         }
+
+        // Theme toggle
+        document.getElementById('themeToggle').addEventListener('click', () => {
+            state.theme = state.theme === 'dark' ? 'light' : 'dark';
+            document.body.classList.toggle('light-mode');
+            saveState();
+        });
+
+        // Time tab handling
+        document.querySelectorAll('.time-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.time-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                state.currentTime = tab.dataset.time;
+                render();
+            });
+        });
 
         // Modal handling
         const modalOverlay = document.getElementById('modalOverlay');
@@ -690,8 +938,10 @@
         const saveBtn = document.getElementById('saveBtn');
         const nameInput = document.getElementById('supplementName');
         const dosageInput = document.getElementById('supplementDosage');
+        const timeSelect = document.getElementById('supplementTime');
 
         addBtn.addEventListener('click', () => {
+            timeSelect.value = state.currentTime;
             modalOverlay.classList.add('active');
             nameInput.focus();
         });
@@ -705,8 +955,9 @@
         saveBtn.addEventListener('click', () => {
             const name = nameInput.value.trim();
             const dosage = dosageInput.value.trim();
+            const time = timeSelect.value;
             if (name) {
-                addSupplement(name, dosage || 'As directed');
+                addSupplement(name, dosage || 'As directed', time);
                 modalOverlay.classList.remove('active');
                 nameInput.value = '';
                 dosageInput.value = '';
