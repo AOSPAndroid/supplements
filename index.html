@@ -12,16 +12,11 @@
             --bg: #0a0a0f;
             --card: #12121a;
             --accent: #6366f1;
-            --accent-glow: #818cf8;
             --success: #10b981;
-            --success-glow: #34d399;
             --text: #f1f5f9;
             --text-dim: #64748b;
             --border: #1e1e2e;
             --warning: #f59e0b;
-            --morning: #fbbf24;
-            --afternoon: #f97316;
-            --evening: #8b5cf6;
         }
 
         .light-mode {
@@ -44,7 +39,6 @@
             background: var(--bg);
             color: var(--text);
             min-height: 100vh;
-            overflow-x: hidden;
             background-image: 
                 radial-gradient(ellipse at 20% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
                 radial-gradient(ellipse at 80% 100%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
@@ -69,22 +63,12 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 24px;
-            animation: fadeInDown 0.6s ease-out;
-        }
-
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .header-left h1 {
             font-size: 28px;
             font-weight: 600;
             letter-spacing: -0.5px;
-            background: linear-gradient(135deg, var(--text) 0%, var(--text-dim) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
 
         .header-left .date {
@@ -99,11 +83,6 @@
             border-radius: 12px;
             padding: 10px;
             cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .theme-toggle:hover {
-            border-color: var(--accent);
         }
 
         .theme-toggle svg {
@@ -111,50 +90,6 @@
             height: 20px;
             stroke: var(--text);
             fill: none;
-        }
-
-        /* Time of Day Tabs */
-        .time-tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 20px;
-            animation: fadeInUp 0.6s ease-out 0.1s both;
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .time-tab {
-            flex: 1;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 12px 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-        }
-
-        .time-tab.active {
-            border-color: var(--accent);
-            background: linear-gradient(135deg, var(--card) 0%, rgba(99, 102, 241, 0.1) 100%);
-        }
-
-        .time-tab .icon {
-            font-size: 20px;
-            margin-bottom: 4px;
-        }
-
-        .time-tab .label {
-            font-size: 11px;
-            font-weight: 500;
-            color: var(--text-dim);
-        }
-
-        .time-tab.active .label {
-            color: var(--accent);
         }
 
         .streak-banner {
@@ -166,7 +101,6 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            animation: fadeInUp 0.6s ease-out 0.15s both;
         }
 
         .light-mode .streak-banner {
@@ -219,7 +153,6 @@
             stroke-dasharray: 176;
             stroke-dashoffset: 176;
             transition: stroke-dashoffset 0.8s ease-out;
-            filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.6));
         }
 
         .progress-text {
@@ -231,14 +164,12 @@
             font-weight: 600;
         }
 
-        /* Weekly Stats */
         .weekly-stats {
             background: var(--card);
             border: 1px solid var(--border);
             border-radius: 14px;
             padding: 16px;
             margin-bottom: 20px;
-            animation: fadeInUp 0.6s ease-out 0.2s both;
         }
 
         .weekly-stats h3 {
@@ -303,32 +234,7 @@
             align-items: center;
             justify-content: space-between;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            animation: fadeInUp 0.6s ease-out both;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .supplement-card:nth-child(1) { animation-delay: 0.25s; }
-        .supplement-card:nth-child(2) { animation-delay: 0.3s; }
-        .supplement-card:nth-child(3) { animation-delay: 0.35s; }
-        .supplement-card:nth-child(4) { animation-delay: 0.4s; }
-        .supplement-card:nth-child(5) { animation-delay: 0.45s; }
-
-        .supplement-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, transparent 0%, rgba(99, 102, 241, 0.05) 100%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .supplement-card:hover::before {
-            opacity: 1;
+            transition: all 0.2s ease;
         }
 
         .supplement-card.completed {
@@ -354,20 +260,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             flex-shrink: 0;
         }
 
         .supplement-card.completed .checkbox {
             background: var(--success);
             border-color: var(--success);
-            animation: checkPop 0.3s ease-out;
-        }
-
-        @keyframes checkPop {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
         }
 
         .checkbox svg {
@@ -388,7 +287,6 @@
         .supplement-name {
             font-size: 15px;
             font-weight: 500;
-            transition: color 0.3s ease;
         }
 
         .supplement-card.completed .supplement-name {
@@ -428,20 +326,13 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            transition: all 0.3s ease;
             margin-top: 16px;
             box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
-            animation: fadeInUp 0.6s ease-out 0.5s both;
             font-family: inherit;
         }
 
         .add-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 30px rgba(99, 102, 241, 0.4);
-        }
-
-        .add-btn:active {
-            transform: translateY(0);
         }
 
         .add-btn svg {
@@ -494,7 +385,7 @@
             margin-bottom: 20px;
         }
 
-        .modal input, .modal select {
+        .modal input {
             width: 100%;
             background: var(--bg);
             border: 1px solid var(--border);
@@ -504,10 +395,9 @@
             font-size: 15px;
             font-family: inherit;
             margin-bottom: 12px;
-            transition: border-color 0.3s ease;
         }
 
-        .modal input:focus, .modal select:focus {
+        .modal input:focus {
             outline: none;
             border-color: var(--accent);
         }
@@ -529,7 +419,6 @@
             font-size: 14px;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s ease;
             font-family: inherit;
         }
 
@@ -539,41 +428,16 @@
             color: var(--text-dim);
         }
 
-        .modal-btn.cancel:hover {
-            background: var(--border);
-        }
-
         .modal-btn.save {
             background: var(--accent);
             border: none;
             color: white;
         }
 
-        .modal-btn.save:hover {
-            background: #4f46e5;
-        }
-
-        .delete-btn {
-            background: transparent;
-            border: none;
-            color: #ef4444;
-            font-size: 12px;
-            cursor: pointer;
-            padding: 4px 8px;
-            border-radius: 6px;
-            transition: background 0.2s ease;
-            font-family: inherit;
-        }
-
-        .delete-btn:hover {
-            background: rgba(239, 68, 68, 0.1);
-        }
-
         .empty-state {
             text-align: center;
             padding: 40px 20px;
             color: var(--text-dim);
-            animation: fadeInUp 0.6s ease-out;
         }
 
         .empty-state svg {
@@ -610,21 +474,6 @@
             </button>
         </header>
 
-        <div class="time-tabs">
-            <div class="time-tab active" data-time="morning">
-                <div class="icon">🌅</div>
-                <div class="label">Morning</div>
-            </div>
-            <div class="time-tab" data-time="afternoon">
-                <div class="icon">☀️</div>
-                <div class="label">Afternoon</div>
-            </div>
-            <div class="time-tab" data-time="evening">
-                <div class="icon">🌙</div>
-                <div class="label">Evening</div>
-            </div>
-        </div>
-
         <div class="streak-banner">
             <div class="streak-info">
                 <h2>Today's Streak</h2>
@@ -642,14 +491,10 @@
 
         <div class="weekly-stats">
             <h3>This Week</h3>
-            <div class="week-days" id="weekDays">
-                <!-- Generated by JS -->
-            </div>
+            <div class="week-days" id="weekDays"></div>
         </div>
 
-        <div class="supplements" id="supplementsList">
-            <!-- Supplements will be rendered here -->
-        </div>
+        <div class="supplements" id="supplementsList"></div>
 
         <button class="add-btn" id="addBtn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -666,11 +511,6 @@
             <h3>Add Supplement</h3>
             <input type="text" id="supplementName" placeholder="Name (e.g., Vitamin D3)">
             <input type="text" id="supplementDosage" placeholder="Dosage (e.g., 5000 IU)">
-            <select id="supplementTime">
-                <option value="morning">🌅 Morning</option>
-                <option value="afternoon">☀️ Afternoon</option>
-                <option value="evening">🌙 Evening</option>
-            </select>
             <div class="modal-buttons">
                 <button class="modal-btn cancel" id="cancelBtn">Cancel</button>
                 <button class="modal-btn save" id="saveBtn">Save</button>
@@ -679,47 +519,39 @@
     </div>
 
     <script>
-        // App State
         const state = {
             supplements: [],
-            completed: {}, // { "morning-2026-02-19": [id1, id2] }
-            currentTime: 'morning',
+            completed: {},
             currentStreak: 0,
             theme: 'dark'
         };
 
-        const timeOfDay = ['morning', 'afternoon', 'evening'];
-
-        // Load from localStorage
         function loadState() {
-            const savedSupplements = localStorage.getItem('supplements');
-            const savedCompleted = localStorage.getItem('completed');
-            const savedStreak = localStorage.getItem('streak');
-            const savedTheme = localStorage.getItem('theme');
+            const saved = localStorage.getItem('supplements');
+            const completed = localStorage.getItem('completed');
+            const streak = localStorage.getItem('streak');
+            const theme = localStorage.getItem('theme');
 
-            if (savedSupplements) state.supplements = JSON.parse(savedSupplements);
-            if (savedCompleted) state.completed = JSON.parse(savedCompleted);
-            if (savedStreak) state.currentStreak = parseInt(savedStreak);
-            if (savedTheme) state.theme = savedTheme;
+            if (saved) state.supplements = JSON.parse(saved);
+            if (completed) state.completed = JSON.parse(completed);
+            if (streak) state.currentStreak = parseInt(streak);
+            if (theme) state.theme = theme;
 
-            // Set default supplements if empty
             if (state.supplements.length === 0) {
                 state.supplements = [
-                    { id: 1, name: 'Vitamin D3', dosage: '5000 IU', time: 'morning' },
-                    { id: 2, name: 'Omega-3', dosage: '2000mg', time: 'morning' },
-                    { id: 3, name: 'Magnesium', dosage: '400mg', time: 'evening' },
-                    { id: 4, name: 'Zinc', dosage: '30mg', time: 'evening' }
+                    { id: 1, name: 'Vitamin D3', dosage: '5000 IU', streak: 0 },
+                    { id: 2, name: 'Omega-3', dosage: '2000mg', streak: 0 },
+                    { id: 3, name: 'Magnesium', dosage: '400mg', streak: 0 },
+                    { id: 4, name: 'Zinc', dosage: '30mg', streak: 0 }
                 ];
                 saveState();
             }
 
-            // Apply theme
             if (state.theme === 'light') {
                 document.body.classList.add('light-mode');
             }
         }
 
-        // Save to localStorage
         function saveState() {
             localStorage.setItem('supplements', JSON.stringify(state.supplements));
             localStorage.setItem('completed', JSON.stringify(state.completed));
@@ -727,17 +559,10 @@
             localStorage.setItem('theme', state.theme);
         }
 
-        // Get today's key
         function getTodayKey() {
             return new Date().toISOString().split('T')[0];
         }
 
-        // Get completed key
-        function getCompletedKey(time) {
-            return `${time}-${getTodayKey()}`;
-        }
-
-        // Get week days
         function getWeekDays() {
             const days = [];
             const today = new Date();
@@ -752,34 +577,31 @@
             return days;
         }
 
-        // Render
         function render() {
             const list = document.getElementById('supplementsList');
             
-            // Update date
             document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', {
                 weekday: 'long',
                 month: 'long',
                 day: 'numeric'
             });
 
-            // Filter supplements by time of day
-            const filtered = state.supplements.filter(s => s.time === state.currentTime);
-            const completedToday = state.completed[getCompletedKey(state.currentTime)] || [];
+            const todayKey = getTodayKey();
+            const completedToday = state.completed[todayKey] || [];
 
-            if (filtered.length === 0) {
+            if (state.supplements.length === 0) {
                 list.innerHTML = `
                     <div class="empty-state">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
                         </svg>
-                        <p>No supplements for ${state.currentTime}</p>
+                        <p>No supplements added yet</p>
                     </div>
                 `;
                 return;
             }
 
-            list.innerHTML = filtered.map(supp => {
+            list.innerHTML = state.supplements.map(supp => {
                 const isCompleted = completedToday.includes(supp.id);
                 return `
                     <div class="supplement-card ${isCompleted ? 'completed' : ''}" data-id="${supp.id}">
@@ -804,10 +626,8 @@
                 `;
             }).join('');
 
-            // Update streak banner for current time period
-            const periodSupps = state.supplements.filter(s => s.time === state.currentTime);
             const completed = completedToday.length;
-            const total = periodSupps.length;
+            const total = state.supplements.length;
             const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
             
             document.getElementById('streakCount').textContent = state.currentStreak;
@@ -818,10 +638,8 @@
             document.getElementById('progressRing').style.strokeDashoffset = offset;
             document.getElementById('progressText').textContent = `${percentage}%`;
 
-            // Update weekly stats
             renderWeekStats();
 
-            // Add click handlers
             document.querySelectorAll('.supplement-card').forEach(card => {
                 card.addEventListener('click', () => toggleSupplement(card.dataset.id));
                 card.addEventListener('contextmenu', (e) => {
@@ -834,31 +652,36 @@
         function renderWeekStats() {
             const weekDays = getWeekDays();
             const container = document.getElementById('weekDays');
+            const todayKey = getTodayKey();
             
             container.innerHTML = weekDays.map(day => {
-                const dayKey = `${state.currentTime}-${day.date}`;
-                const dayCompleted = state.completed[dayKey] || [];
-                const daySupps = state.supplements.filter(s => s.time === state.currentTime);
+                const dayCompleted = state.completed[day.date] || [];
                 const completed = dayCompleted.length;
-                const total = daySupps.length;
+                const total = state.supplements.length;
                 
                 let dotClass = 'dot';
-                if (completed === total && total > 0) dotClass += ' complete';
-                else if (completed > 0) dotClass += ' partial';
+                if (day.date === todayKey) {
+                    if (completed === total && total > 0) dotClass += ' complete';
+                    else if (completed > 0) dotClass += ' partial';
+                } else {
+                    const isComplete = completed === total && total > 0;
+                    const isPartial = completed > 0 && completed < total;
+                    if (isComplete) dotClass += ' complete';
+                    else if (isPartial) dotClass += ' partial';
+                }
                 
                 return `
                     <div class="week-day">
-                        <div class="${dotClass}">${completed}/${total}</div>
+                        <div class="${dotClass}">${day.date === todayKey ? completed + '/' + total : (completed === total && total > 0 ? '✓' : '-')}</div>
                         <div class="day">${day.day}</div>
                     </div>
                 `;
             }).join('');
         }
 
-        // Toggle supplement completion
         function toggleSupplement(id) {
             const suppId = parseInt(id);
-            const key = getCompletedKey(state.currentTime);
+            const key = getTodayKey();
             
             if (!state.completed[key]) {
                 state.completed[key] = [];
@@ -868,17 +691,13 @@
             const supplement = state.supplements.find(s => s.id === suppId);
 
             if (index === -1) {
-                // Mark as completed
                 state.completed[key].push(suppId);
                 supplement.streak = (supplement.streak || 0) + 1;
                 
-                // Check if all completed for streak
-                const periodSupps = state.supplements.filter(s => s.time === state.currentTime);
-                if (state.completed[key].length === periodSupps.length) {
+                if (state.completed[key].length === state.supplements.length) {
                     state.currentStreak++;
                 }
             } else {
-                // Unmark
                 state.completed[key].splice(index, 1);
                 supplement.streak = Math.max(0, (supplement.streak || 1) - 1);
             }
@@ -887,25 +706,21 @@
             render();
         }
 
-        // Add supplement
-        function addSupplement(name, dosage, time) {
+        function addSupplement(name, dosage) {
             const newId = Math.max(0, ...state.supplements.map(s => s.id)) + 1;
             state.supplements.push({
                 id: newId,
                 name: name,
-                dosage: dosage,
-                time: time,
+                dosage: dosage || 'As directed',
                 streak: 0
             });
             saveState();
             render();
         }
 
-        // Delete supplement
         function deleteSupplement(id) {
             if (confirm('Delete this supplement?')) {
                 state.supplements = state.supplements.filter(s => s.id !== parseInt(id));
-                // Remove from completed
                 Object.keys(state.completed).forEach(key => {
                     state.completed[key] = state.completed[key].filter(c => c !== parseInt(id));
                 });
@@ -914,34 +729,20 @@
             }
         }
 
-        // Theme toggle
         document.getElementById('themeToggle').addEventListener('click', () => {
             state.theme = state.theme === 'dark' ? 'light' : 'dark';
             document.body.classList.toggle('light-mode');
             saveState();
         });
 
-        // Time tab handling
-        document.querySelectorAll('.time-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                document.querySelectorAll('.time-tab').forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                state.currentTime = tab.dataset.time;
-                render();
-            });
-        });
-
-        // Modal handling
         const modalOverlay = document.getElementById('modalOverlay');
         const addBtn = document.getElementById('addBtn');
         const cancelBtn = document.getElementById('cancelBtn');
         const saveBtn = document.getElementById('saveBtn');
         const nameInput = document.getElementById('supplementName');
         const dosageInput = document.getElementById('supplementDosage');
-        const timeSelect = document.getElementById('supplementTime');
 
         addBtn.addEventListener('click', () => {
-            timeSelect.value = state.currentTime;
             modalOverlay.classList.add('active');
             nameInput.focus();
         });
@@ -955,9 +756,8 @@
         saveBtn.addEventListener('click', () => {
             const name = nameInput.value.trim();
             const dosage = dosageInput.value.trim();
-            const time = timeSelect.value;
             if (name) {
-                addSupplement(name, dosage || 'As directed', time);
+                addSupplement(name, dosage);
                 modalOverlay.classList.remove('active');
                 nameInput.value = '';
                 dosageInput.value = '';
@@ -970,7 +770,6 @@
             }
         });
 
-        // Initialize
         loadState();
         render();
     </script>
