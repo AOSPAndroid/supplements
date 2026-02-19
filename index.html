@@ -277,6 +277,7 @@
             justify-content: space-between;
             cursor: pointer;
             transition: all 0.2s ease;
+            position: relative;
         }
 
         .supplement-card.completed {
@@ -287,6 +288,27 @@
         .supplement-card.readonly {
             opacity: 0.7;
             cursor: default;
+        }
+
+        .supplement-card .delete-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(239, 68, 68, 0.1);
+            border: none;
+            border-radius: 8px;
+            padding: 6px 10px;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            color: #ef4444;
+            font-size: 14px;
+        }
+
+        .supplement-card:hover .delete-btn,
+        .supplement-card.show-delete .delete-btn {
+            opacity: 1;
         }
 
         .supplement-card:active:not(.readonly) {
@@ -753,6 +775,7 @@
                             </svg>
                             ${supp.streak || 0}
                         </div>
+                        ${!viewingHistory ? `<button class="delete-btn" data-id="${supp.id}">✕</button>` : ''}
                     </div>
                 `;
             }).join('');
@@ -784,8 +807,15 @@
                 });
                 card.addEventListener('contextmenu', (e) => {
                     e.preventDefault();
-                    if (!isToday()) {
-                        // Could add delete here if needed
+                });
+            });
+
+            // Delete button handlers
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (confirm('Delete this supplement?')) {
+                        deleteSupplement(btn.dataset.id);
                     }
                 });
             });
