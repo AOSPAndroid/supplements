@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Supplement Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --card: #12121a;
+            --accent: #6366f1;
+            --accent-glow: #818cf8;
+            --success: #10b981;
+            --success-glow: #34d399;
+            --text: #f1f5f9;
+            --text-dim: #64748b;
+            --border: #1e1e2e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(ellipse at 20% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 100%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
+        }
+
+        .container {
+            max-width: 420px;
+            margin: 0 auto;
+            padding: 24px 16px;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 32px;
+            animation: fadeInDown 0.6s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, var(--text) 0%, var(--text-dim) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .date {
+            font-size: 13px;
+            color: var(--text-dim);
+            margin-top: 6px;
+            font-weight: 400;
+        }
+
+        .streak-banner {
+            background: linear-gradient(135deg, var(--card) 0%, #1a1a25 100%);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            animation: fadeInUp 0.6s ease-out 0.1s both;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .streak-info h2 {
+            font-size: 14px;
+            color: var(--text-dim);
+            font-weight: 400;
+            margin-bottom: 4px;
+        }
+
+        .streak-count {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--success);
+            text-shadow: 0 0 30px rgba(16, 185, 129, 0.4);
+        }
+
+        .streak-label {
+            font-size: 12px;
+            color: var(--text-dim);
+        }
+
+        .progress-ring {
+            width: 64px;
+            height: 64px;
+            position: relative;
+        }
+
+        .progress-ring svg {
+            transform: rotate(-90deg);
+            width: 64px;
+            height: 64px;
+        }
+
+        .progress-ring circle {
+            fill: none;
+            stroke-width: 5;
+            stroke-linecap: round;
+        }
+
+        .progress-ring .bg {
+            stroke: var(--border);
+        }
+
+        .progress-ring .progress {
+            stroke: var(--success);
+            stroke-dasharray: 176;
+            stroke-dashoffset: 176;
+            transition: stroke-dashoffset 0.8s ease-out;
+            filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.6));
+        }
+
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .supplements {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .supplement-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: fadeInUp 0.6s ease-out both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .supplement-card:nth-child(1) { animation-delay: 0.15s; }
+        .supplement-card:nth-child(2) { animation-delay: 0.2s; }
+        .supplement-card:nth-child(3) { animation-delay: 0.25s; }
+        .supplement-card:nth-child(4) { animation-delay: 0.3s; }
+        .supplement-card:nth-child(5) { animation-delay: 0.35s; }
+
+        .supplement-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, transparent 0%, rgba(99, 102, 241, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .supplement-card:hover::before {
+            opacity: 1;
+        }
+
+        .supplement-card.completed {
+            border-color: rgba(16, 185, 129, 0.3);
+            background: linear-gradient(135deg, var(--card) 0%, rgba(16, 185, 129, 0.08) 100%);
+        }
+
+        .supplement-card:active {
+            transform: scale(0.98);
+        }
+
+        .supplement-info {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .checkbox {
+            width: 26px;
+            height: 26px;
+            border-radius: 8px;
+            border: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .supplement-card.completed .checkbox {
+            background: var(--success);
+            border-color: var(--success);
+            animation: checkPop 0.3s ease-out;
+        }
+
+        @keyframes checkPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .checkbox svg {
+            width: 14px;
+            height: 14px;
+            stroke: var(--bg);
+            stroke-width: 3;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.2s ease;
+        }
+
+        .supplement-card.completed .checkbox svg {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .supplement-name {
+            font-size: 15px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .supplement-card.completed .supplement-name {
+            color: var(--text-dim);
+        }
+
+        .supplement-dosage {
+            font-size: 12px;
+            color: var(--text-dim);
+            margin-top: 2px;
+        }
+
+        .supplement-streak {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .supplement-streak svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        .add-btn {
+            background: linear-gradient(135deg, var(--accent) 0%, #4f46e5 100%);
+            border: none;
+            border-radius: 14px;
+            padding: 16px;
+            color: white;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            margin-top: 16px;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+            animation: fadeInUp 0.6s ease-out 0.4s both;
+        }
+
+        .add-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(99, 102, 241, 0.4);
+        }
+
+        .add-btn:active {
+            transform: translateY(0);
+        }
+
+        .add-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 28px;
+            width: 100%;
+            max-width: 340px;
+            transform: scale(0.9) translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .modal input {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px 16px;
+            color: var(--text);
+            font-size: 15px;
+            font-family: inherit;
+            margin-bottom: 12px;
+            transition: border-color 0.3s ease;
+        }
+
+        .modal input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .modal input::placeholder {
+            color: var(--text-dim);
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .modal-btn.cancel {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+        }
+
+        .modal-btn.cancel:hover {
+            background: var(--border);
+        }
+
+        .modal-btn.save {
+            background: var(--accent);
+            border: none;
+            color: white;
+        }
+
+        .modal-btn.save:hover {
+            background: #4f46e5;
+        }
+
+        .delete-btn {
+            background: transparent;
+            border: none;
+            color: #ef4444;
+            font-size: 12px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: background 0.2s ease;
+            font-family: inherit;
+        }
+
+        .delete-btn:hover {
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-dim);
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .empty-state svg {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Supplements</h1>
+            <div class="date" id="currentDate"></div>
+        </header>
+
+        <div class="streak-banner">
+            <div class="streak-info">
+                <h2>Current Streak</h2>
+                <div class="streak-count" id="streakCount">0</div>
+                <div class="streak-label">days</div>
+            </div>
+            <div class="progress-ring">
+                <svg>
+                    <circle class="bg" cx="32" cy="32" r="28"></circle>
+                    <circle class="progress" id="progressRing" cx="32" cy="32" r="28"></circle>
+                </svg>
+                <div class="progress-text" id="progressText">0%</div>
+            </div>
+        </div>
+
+        <div class="supplements" id="supplementsList">
+            <!-- Supplements will be rendered here -->
+        </div>
+
+        <button class="add-btn" id="addBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Add Supplement
+        </button>
+    </div>
+
+    <!-- Add Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <h3>Add Supplement</h3>
+            <input type="text" id="supplementName" placeholder="Name (e.g., Vitamin D3)">
+            <input type="text" id="supplementDosage" placeholder="Dosage (e.g., 5000 IU)">
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" id="cancelBtn">Cancel</button>
+                <button class="modal-btn save" id="saveBtn">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // App State
+        const state = {
+            supplements: [],
+            completedToday: [],
+            currentStreak: 0,
+            lastCompletedDate: null
+        };
+
+        // Load from localStorage
+        function loadState() {
+            const today = new Date().toDateString();
+            
+            const savedSupplements = localStorage.getItem('supplements');
+            const savedCompleted = localStorage.getItem('completedToday');
+            const savedStreak = localStorage.getItem('streak');
+            const savedLastDate = localStorage.getItem('lastCompletedDate');
+
+            if (savedSupplements) state.supplements = JSON.parse(savedSupplements);
+            if (savedCompleted) {
+                const completedData = JSON.parse(savedCompleted);
+                // Reset if it's a new day
+                if (completedData.date !== today) {
+                    // Check if yesterday was completed (for streak)
+                    const yesterday = new Date();
+                    yesterday.setDate(yesterday.getDate() - 1);
+                    
+                    if (completedData.date === yesterday.toDateString() && completedData.items.length > 0) {
+                        state.currentStreak = savedStreak ? parseInt(savedStreak) : 0;
+                    } else if (completedData.date !== today) {
+                        // Reset streak if more than 1 day gap
+                        state.currentStreak = 0;
+                    }
+                    state.completedToday = [];
+                } else {
+                    state.completedToday = completedData.items;
+                }
+            }
+            if (savedStreak && savedLastDate) {
+                const lastDate = new Date(savedLastDate);
+                const todayDate = new Date();
+                const diffDays = Math.floor((todayDate - lastDate) / (1000 * 60 * 60 * 24));
+                
+                if (diffDays <= 1) {
+                    state.currentStreak = parseInt(savedStreak);
+                }
+            }
+            
+            // Set default supplements if empty
+            if (state.supplements.length === 0) {
+                state.supplements = [
+                    { id: 1, name: 'Vitamin D3', dosage: '5000 IU', streak: 0 },
+                    { id: 2, name: 'Omega-3', dosage: '2000mg', streak: 0 },
+                    { id: 3, name: 'Magnesium', dosage: '400mg', streak: 0 },
+                    { id: 4, name: 'Zinc', dosage: '30mg', streak: 0 }
+                ];
+                saveState();
+            }
+        }
+
+        // Save to localStorage
+        function saveState() {
+            localStorage.setItem('supplements', JSON.stringify(state.supplements));
+            localStorage.setItem('completedToday', JSON.stringify({
+                date: new Date().toDateString(),
+                items: state.completedToday
+            }));
+            localStorage.setItem('streak', state.currentStreak.toString());
+            localStorage.setItem('lastCompletedDate', new Date().toDateString());
+        }
+
+        // Render
+        function render() {
+            const list = document.getElementById('supplementsList');
+            const today = new Date().toDateString();
+            
+            // Update date
+            document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', {
+                weekday: 'long',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            if (state.supplements.length === 0) {
+                list.innerHTML = `
+                    <div class="empty-state">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                        <p>No supplements added yet</p>
+                    </div>
+                `;
+                return;
+            }
+
+            list.innerHTML = state.supplements.map(supp => {
+                const isCompleted = state.completedToday.includes(supp.id);
+                return `
+                    <div class="supplement-card ${isCompleted ? 'completed' : ''}" data-id="${supp.id}">
+                        <div class="supplement-info">
+                            <div class="checkbox">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="supplement-name">${supp.name}</div>
+                                <div class="supplement-dosage">${supp.dosage}</div>
+                            </div>
+                        </div>
+                        <div class="supplement-streak">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                            </svg>
+                            ${supp.streak || 0}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Update streak banner
+            document.getElementById('streakCount').textContent = state.currentStreak;
+            
+            // Update progress ring
+            const total = state.supplements.length;
+            const completed = state.completedToday.length;
+            const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+            
+            const circumference = 2 * Math.PI * 28;
+            const offset = circumference - (percentage / 100) * circumference;
+            
+            document.getElementById('progressRing').style.strokeDashoffset = offset;
+            document.getElementById('progressText').textContent = `${percentage}%`;
+
+            // Add click handlers
+            document.querySelectorAll('.supplement-card').forEach(card => {
+                card.addEventListener('click', () => toggleSupplement(card.dataset.id));
+                card.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                    deleteSupplement(card.dataset.id);
+                });
+            });
+        }
+
+        // Toggle supplement completion
+        function toggleSupplement(id) {
+            const suppId = parseInt(id);
+            const index = state.completedToday.indexOf(suppId);
+            const supplement = state.supplements.find(s => s.id === suppId);
+
+            if (index === -1) {
+                // Mark as completed
+                state.completedToday.push(suppId);
+                supplement.streak = (supplement.streak || 0) + 1;
+                
+                // Check if all completed for streak
+                if (state.completedToday.length === state.supplements.length) {
+                    state.currentStreak++;
+                }
+            } else {
+                // Unmark
+                state.completedToday.splice(index, 1);
+                supplement.streak = Math.max(0, (supplement.streak || 1) - 1);
+            }
+
+            saveState();
+            render();
+        }
+
+        // Add supplement
+        function addSupplement(name, dosage) {
+            const newId = Math.max(0, ...state.supplements.map(s => s.id)) + 1;
+            state.supplements.push({
+                id: newId,
+                name: name,
+                dosage: dosage,
+                streak: 0
+            });
+            saveState();
+            render();
+        }
+
+        // Delete supplement
+        function deleteSupplement(id) {
+            if (confirm('Delete this supplement?')) {
+                state.supplements = state.supplements.filter(s => s.id !== parseInt(id));
+                state.completedToday = state.completedToday.filter(c => c !== parseInt(id));
+                saveState();
+                render();
+            }
+        }
+
+        // Modal handling
+        const modalOverlay = document.getElementById('modalOverlay');
+        const addBtn = document.getElementById('addBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const saveBtn = document.getElementById('saveBtn');
+        const nameInput = document.getElementById('supplementName');
+        const dosageInput = document.getElementById('supplementDosage');
+
+        addBtn.addEventListener('click', () => {
+            modalOverlay.classList.add('active');
+            nameInput.focus();
+        });
+
+        cancelBtn.addEventListener('click', () => {
+            modalOverlay.classList.remove('active');
+            nameInput.value = '';
+            dosageInput.value = '';
+        });
+
+        saveBtn.addEventListener('click', () => {
+            const name = nameInput.value.trim();
+            const dosage = dosageInput.value.trim();
+            if (name) {
+                addSupplement(name, dosage || 'As directed');
+                modalOverlay.classList.remove('active');
+                nameInput.value = '';
+                dosageInput.value = '';
+            }
+        });
+
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) {
+                modalOverlay.classList.remove('active');
+            }
+        });
+
+        // Initialize
+        loadState();
+        render();
+    </script>
+</body>
+</html>
