@@ -45,12 +45,6 @@
             transition: background 0.3s ease;
         }
 
-        .light-mode body {
-            background-image: 
-                radial-gradient(ellipse at 20% 0%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 100%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
-        }
-
         .container {
             max-width: 420px;
             margin: 0 auto;
@@ -77,19 +71,67 @@
             margin-top: 4px;
         }
 
-        .theme-toggle {
+        .header-right {
+            display: flex;
+            gap: 8px;
+        }
+
+        .theme-toggle, .nav-btn {
             background: var(--card);
             border: 1px solid var(--border);
             border-radius: 12px;
             padding: 10px;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .theme-toggle svg {
+        .nav-btn {
+            padding: 10px 14px;
+            font-size: 18px;
+        }
+
+        .theme-toggle svg, .nav-btn svg {
             width: 20px;
             height: 20px;
             stroke: var(--text);
             fill: none;
+        }
+
+        .date-nav {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .date-nav-btn {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 8px 12px;
+            cursor: pointer;
+            color: var(--text);
+            font-size: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .date-nav-btn:hover {
+            border-color: var(--accent);
+        }
+
+        .date-nav-btn:disabled {
+            opacity: 0.3;
+            cursor: default;
+        }
+
+        .current-date {
+            font-size: 15px;
+            font-weight: 500;
+            min-width: 140px;
+            text-align: center;
         }
 
         .streak-banner {
@@ -242,7 +284,12 @@
             background: linear-gradient(135deg, var(--card) 0%, rgba(16, 185, 129, 0.08) 100%);
         }
 
-        .supplement-card:active {
+        .supplement-card.readonly {
+            opacity: 0.7;
+            cursor: default;
+        }
+
+        .supplement-card:active:not(.readonly) {
             transform: scale(0.98);
         }
 
@@ -333,6 +380,12 @@
 
         .add-btn:hover {
             transform: translateY(-2px);
+        }
+
+        .add-btn:disabled {
+            opacity: 0.5;
+            cursor: default;
+            transform: none;
         }
 
         .add-btn svg {
@@ -450,6 +503,21 @@
         .empty-state p {
             font-size: 14px;
         }
+
+        .history-badge {
+            text-align: center;
+            font-size: 12px;
+            color: var(--warning);
+            margin-bottom: 12px;
+            padding: 6px 12px;
+            background: rgba(245, 158, 11, 0.1);
+            border-radius: 8px;
+            display: none;
+        }
+
+        .history-badge.visible {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -459,20 +527,37 @@
                 <h1>Supplements</h1>
                 <div class="date" id="currentDate"></div>
             </div>
-            <button class="theme-toggle" id="themeToggle" title="Toggle theme">
-                <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="5"></circle>
-                    <line x1="12" y1="1" x2="12" y2="3"></line>
-                    <line x1="12" y1="21" x2="12" y2="23"></line>
-                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                    <line x1="1" y1="12" x2="3" y2="12"></line>
-                    <line x1="21" y1="12" x2="23" y2="12"></line>
-                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                </svg>
-            </button>
+            <div class="header-right">
+                <button class="nav-btn" id="exportBtn" title="Export data">
+                    <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                </button>
+                <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+                    <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
         </header>
+
+        <div class="date-nav">
+            <button class="date-nav-btn" id="prevDay">←</button>
+            <div class="current-date" id="navDate">Today</div>
+            <button class="date-nav-btn" id="nextDay">→</button>
+        </div>
+
+        <div class="history-badge" id="historyBadge">Viewing history - tap supplements to toggle</div>
 
         <div class="streak-banner">
             <div class="streak-info">
@@ -523,7 +608,8 @@
             supplements: [],
             completed: {},
             currentStreak: 0,
-            theme: 'dark'
+            theme: 'dark',
+            viewDate: new Date()
         };
 
         function loadState() {
@@ -560,7 +646,16 @@
         }
 
         function getTodayKey() {
-            return new Date().toISOString().split('T')[0];
+            return state.viewDate.toISOString().split('T')[0];
+        }
+
+        function isToday() {
+            const today = new Date();
+            return state.viewDate.toDateString() === today.toDateString();
+        }
+
+        function formatDateKey(date) {
+            return date.toISOString().split('T')[0];
         }
 
         function getWeekDays() {
@@ -571,23 +666,59 @@
                 d.setDate(d.getDate() - i);
                 days.push({
                     day: d.toLocaleDateString('en-US', { weekday: 'short' }).charAt(0),
-                    date: d.toISOString().split('T')[0]
+                    date: formatDateKey(d)
                 });
             }
             return days;
         }
 
+        function updateNavButtons() {
+            const today = new Date();
+            const prevBtn = document.getElementById('prevDay');
+            const nextBtn = document.getElementById('nextDay');
+            
+            // Can always go back
+            prevBtn.disabled = false;
+            // Can only go forward to today
+            nextBtn.disabled = isToday();
+        }
+
         function render() {
             const list = document.getElementById('supplementsList');
-            
-            document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', {
-                weekday: 'long',
-                month: 'long',
-                day: 'numeric'
-            });
-
             const todayKey = getTodayKey();
             const completedToday = state.completed[todayKey] || [];
+            const viewingHistory = !isToday();
+
+            // Update date display
+            if (isToday()) {
+                document.getElementById('navDate').textContent = 'Today';
+                document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    month: 'long',
+                    day: 'numeric'
+                });
+            } else {
+                document.getElementById('navDate').textContent = state.viewDate.toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric'
+                });
+                document.getElementById('currentDate').textContent = state.viewDate.toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    month: 'long',
+                    day: 'numeric'
+                });
+            }
+
+            // History badge
+            const historyBadge = document.getElementById('historyBadge');
+            if (viewingHistory) {
+                historyBadge.classList.add('visible');
+            } else {
+                historyBadge.classList.remove('visible');
+            }
+
+            // Disable add button when viewing history
+            document.getElementById('addBtn').disabled = viewingHistory;
 
             if (state.supplements.length === 0) {
                 list.innerHTML = `
@@ -604,7 +735,7 @@
             list.innerHTML = state.supplements.map(supp => {
                 const isCompleted = completedToday.includes(supp.id);
                 return `
-                    <div class="supplement-card ${isCompleted ? 'completed' : ''}" data-id="${supp.id}">
+                    <div class="supplement-card ${isCompleted ? 'completed' : ''} ${viewingHistory ? '' : ''}" data-id="${supp.id}">
                         <div class="supplement-info">
                             <div class="checkbox">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -626,7 +757,10 @@
                 `;
             }).join('');
 
-            const completed = completedToday.length;
+            // Calculate today's stats for the banner (always shows today)
+            const todayKeyActual = formatDateKey(new Date());
+            const todayCompleted = state.completed[todayKeyActual] || [];
+            const completed = todayCompleted.length;
             const total = state.supplements.length;
             const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
             
@@ -639,12 +773,20 @@
             document.getElementById('progressText').textContent = `${percentage}%`;
 
             renderWeekStats();
+            updateNavButtons();
 
+            // Click handlers
             document.querySelectorAll('.supplement-card').forEach(card => {
-                card.addEventListener('click', () => toggleSupplement(card.dataset.id));
+                card.addEventListener('click', () => {
+                    if (!isToday()) {
+                        toggleSupplement(card.dataset.id);
+                    }
+                });
                 card.addEventListener('contextmenu', (e) => {
                     e.preventDefault();
-                    deleteSupplement(card.dataset.id);
+                    if (!isToday()) {
+                        // Could add delete here if needed
+                    }
                 });
             });
         }
@@ -652,7 +794,7 @@
         function renderWeekStats() {
             const weekDays = getWeekDays();
             const container = document.getElementById('weekDays');
-            const todayKey = getTodayKey();
+            const todayKey = formatDateKey(new Date());
             
             container.innerHTML = weekDays.map(day => {
                 const dayCompleted = state.completed[day.date] || [];
@@ -718,23 +860,44 @@
             render();
         }
 
-        function deleteSupplement(id) {
-            if (confirm('Delete this supplement?')) {
-                state.supplements = state.supplements.filter(s => s.id !== parseInt(id));
-                Object.keys(state.completed).forEach(key => {
-                    state.completed[key] = state.completed[key].filter(c => c !== parseInt(id));
-                });
-                saveState();
+        // Navigation
+        document.getElementById('prevDay').addEventListener('click', () => {
+            state.viewDate.setDate(state.viewDate.getDate() - 1);
+            render();
+        });
+
+        document.getElementById('nextDay').addEventListener('click', () => {
+            if (!isToday()) {
+                state.viewDate.setDate(state.viewDate.getDate() + 1);
                 render();
             }
-        }
+        });
 
+        // Theme toggle
         document.getElementById('themeToggle').addEventListener('click', () => {
             state.theme = state.theme === 'dark' ? 'light' : 'dark';
             document.body.classList.toggle('light-mode');
             saveState();
         });
 
+        // Export
+        document.getElementById('exportBtn').addEventListener('click', () => {
+            const data = {
+                supplements: state.supplements,
+                completed: state.completed,
+                streak: state.currentStreak,
+                exportedAt: new Date().toISOString()
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `supplements-backup-${formatDateKey(new Date())}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+
+        // Modal handling
         const modalOverlay = document.getElementById('modalOverlay');
         const addBtn = document.getElementById('addBtn');
         const cancelBtn = document.getElementById('cancelBtn');
